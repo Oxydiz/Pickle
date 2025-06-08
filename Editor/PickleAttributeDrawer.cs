@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Text.RegularExpressions;
+using Pickle.ObjectProviders;
 using UnityEditor;
 using UnityEngine;
-using Pickle.ObjectProviders;
-using System.Collections;
-using System.Text.RegularExpressions;
-using System.Reflection;
 
 namespace Pickle.Editor
 {
@@ -198,9 +199,17 @@ namespace Pickle.Editor
                     if (arrayFieldInfo == null)
                         return null;
 
-                    var array = arrayFieldInfo.GetValue(owner) as System.Array;
+                    object arrayLike = arrayFieldInfo.GetValue(owner);
+                    var array = arrayLike as System.Array;
                     if (array == null)
-                        return null;
+                    {
+                        Type type = arrayLike.GetType();
+                        if (type.IsGenericType && type.GetGenericTypeDefinition().IsAssignableFrom(typeof(List<>)))
+                            array = type.GetField("_items", FLAGS_ALL)?.GetValue(arrayLike) as System.Array;
+
+                        if (array == null)
+                            return null;
+                    }
 
                     owner = array.GetValue(index);
                 }
