@@ -60,8 +60,9 @@ namespace Pickle.Editor
             var scene = new AdvancedDropdownItem("Scene");
 
             var nullChoice = new AdvancedDropdownItem("None");
-            nullChoice.id = -1;
+            //nullChoice.id = -1;
             root.AddChild(nullChoice);
+            nullChoice.id = -1;
 
             root.AddChild(assets);
 
@@ -76,7 +77,7 @@ namespace Pickle.Editor
                 var item = new AdvancedDropdownItem(cur.Object.ToString());
                 item.icon = AssetPreview.GetMiniThumbnail(cur.Object);
                 //item.icon = AssetPreview.GetMiniTypeThumbnail(cur.Object.GetType());
-                item.id = _objects.Count;
+                //item.id = _objects.Count;
                 if (cur.Type == ObjectSourceType.Asset)
                 {
                     assetsCount++;
@@ -93,6 +94,7 @@ namespace Pickle.Editor
                     root.AddChild(item);
                 }
 
+                item.id = _objects.Count;
                 _objects.Add(cur.Object);
             }
 
