@@ -64,6 +64,11 @@ namespace Pickle.Editor
             root.AddChild(nullChoice);
             nullChoice.id = -1;
 
+            // New
+            var assetsNullChoice = new AdvancedDropdownItem("None");
+            assets.AddChild(assetsNullChoice);
+            assetsNullChoice.id = -1;
+
             root.AddChild(assets);
 
             var iterator = _lookupStrategy.Lookup();
